@@ -58,6 +58,12 @@ final class CollectionListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        let layout = self.setupCollectionViewLayout()
+        collectionView.setCollectionViewLayout(layout, animated: false)
+    }
+
     // MARK: - Private
 
     @objc private func refreshAction() {
@@ -85,8 +91,12 @@ final class CollectionListView: UIView {
     }
 
     private func setupCollectionViewLayout() -> UICollectionViewFlowLayout {
+        let frameWidth = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isPortrait ?? false
+                       ? self.frame.width
+                       : self.frame.width - safeAreaInsets.left - safeAreaInsets.right
+
         // Ширина ячейки равна ширине экрана с отступами по 10 с каждого края
-        let itemWidth = self.frame.width - 2 * CGFloat.sectionInset
+        let itemWidth = frameWidth - 2 * CGFloat.sectionInset
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         // Высота ячейки равна ширине
