@@ -13,6 +13,7 @@ final class CollectionListViewController: UIViewController {
     // MARK: - Properties
 
     private let presenter: CollectionListPresenterProtocol?
+    private let listView = CollectionListView()
 
     // MARK: - Init
 
@@ -29,5 +30,7 @@ final class CollectionListViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.view = listView
+        presenter?.viewDidAppear(ui: listView)
     }
 }
